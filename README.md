@@ -3,7 +3,7 @@
 This SPA was built using JavaScript, HTML , CSS.
 
 >[!NOTE]
->MyNotes doesn't support any DB.
+>MyNotes doesn't support any BD.
 
 ## Available functionality:
 - Note creating
