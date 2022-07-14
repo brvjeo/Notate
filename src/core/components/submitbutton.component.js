@@ -8,7 +8,11 @@ export class SubmitButtonComponent extends ButtonComponent{
         if(name != undefined) this.name = name;
     }
 
-    set type(type){
-        this.element.type = type;
+    set name(value){
+        this.element.name = value;
+    }
+
+    set type(value){
+        this.element.type = value;
     }
 }

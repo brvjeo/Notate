@@ -8,11 +8,15 @@ export class FormComponent extends Component{
         if(method != undefined) this.method = method;
     }
 
-    set method(method){
-        method = String(method).toLocaleLowerCase();
-        if('get' != method && 'post' != method) return;
+    set name(value){
+        this.element.name = value;
+    }
+
+    set method(value){
+        value = String(value).toLocaleLowerCase();
+        if('get' != value && 'post' != value) return;
          
-        this.element.method = method;
+        this.element.method = value;
     }
 
     reset(){

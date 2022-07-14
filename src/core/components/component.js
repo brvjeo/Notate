@@ -1,72 +1,52 @@
-export class Component {
+export class Component{ 
 
     constructor(tagName){
         this.element = document.createElement(tagName);
     }
 
-    set styles(stylesObj){
-        for(let key in stylesObj){
-            this.element.style[key] = stylesObj[key];
-        }
+    set hidden(value){
+        this.element.hidden = !!value;
     }
 
-    set name(name){
-        this.element.name = name;
+    set styles(value){
+        this.setStyles(value);
     }
 
-    set innerHTML(innerHTML){
-        this.element.innerHTML = innerHTML;
+    set id(value){
+        this.addId(value);
     }
 
-    set textContent(text){
-        this.element.textContent = text;
-    }
-
-    setName(name){
-        this.name = name;
-
-        return this;
+    set textContent(value){
+        this.setTextContent(value);
     }
 
     setTextContent(text){
-        this.textContent = text;
-        
-        return this;
-    }
-
-    setInnerHTML(innerHTML){
-        this.innerHTML = innerHTML;
+        this.element.textContent = text;
 
         return this;
     }
 
-    setStyles(stylesObj){
-        this.styles = stylesObj;
-
-        return this;
-    }
-
-    addClass(items){
-        for(let i of items.split(' ')){
-            this.element.classList.add(i);
+    setStyles(stylesObject){
+        for(let key in stylesObject){
+            this.element.style[key] = stylesObject[key];
         }
+
+        return this;
+    }
+
+    addId(id){
+        this.element.id = `#${id}`;
+    }
+
+    addClass(classes){
+        classes.split(' ').forEach(value => this.element.classList.add(value));
 
         return this;
     }
 
     merge(...components){
-        for(let component of components){
-            if(!(component instanceof Component)) continue;
-
-            this.element.insertAdjacentHTML('beforeend',component.render());
-        }
+        components.forEach(component => this.element.appendChild(component.element));
 
         return this;
-    }
-
-    render(){
-        console.log(this);
-
-        return this.element.outerHTML;
     }
 }
