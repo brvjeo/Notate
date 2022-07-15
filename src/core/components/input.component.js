@@ -1,25 +1,26 @@
 import { Component } from "./component";
 
-export class InputComponent extends Component{
-    constructor(type, name){
+export class InputComponent extends Component {
+    constructor(name, type) {
         super('input');
-        if(name != undefined) this.name = name;
-        this.type = type ?? 'text';
+
+        this.name = name;
+        this.type = type;
     }
 
-    set placeholder(value){
+    set placeholder(value) {
         this.setPlaceHolder(value);
     }
 
-    set name(value){
+    set name(value) {
         this.element.name = value;
     }
 
-    set type(value){
+    set type(value) {
         this.element.type = value;
     }
 
-    setPlaceHolder(value){
+    setPlaceHolder(value) {
         this.element.placeholder = value;
 
         return this;
