@@ -12,33 +12,46 @@ export class AuthFormExemplar extends FormComponent {
 
     constructor() {
         super('auth-form');
+        this.addClass(this.name);
 
         this.onsubmit = this.#onSubmit;
         this.onlogin = this.#onLogin;
         this.onsignin = this.#onSignin;
 
         this.#InvalidAuthComponent = new HiddenComponent('div');
-        this.#InvalidAuthComponent.setTextContent(this.#InvalidAuthMessage);
-        this.#InvalidAuthComponent.addClass('mb-3 text-center text-danger');
+        this.#InvalidAuthComponent.text = this.#InvalidAuthMessage;
+        this.#InvalidAuthComponent.addClass('mb-3','text-center','text-danger');
     }
 
     render() {
-        this.addClass(this.name);
         this.merge(
             new Component('div')
-                .addClass('mb-5 auth-logo d-flex justify-content-center')
-                .merge(new ImageComponent('./assets/brand-notate.svg', 'brand-notate')),
-            new Component('div')
-                .addClass('mb-3')
-                .merge(new InputComponent('login', 'text').setPlaceHolder('Login').addClass('form-control')),
-            new Component('div')
-                .addClass('mb-3')
-                .merge(new InputComponent('password', 'password').setPlaceHolder('Password').addClass('form-control')),
-            this.#InvalidAuthComponent,
-            new Component('div').addClass('d-flex flex-column justify-content-center')
+                .addClass('mb-5', 'auth-logo', 'd-flex', 'justify-content-center')
                 .merge(
-                    new ButtonComponent('btn-login', 'Login').addClass('btn btn-outline-dark rounded mb-3'),
-                    new ButtonComponent('btn-signin', 'Signin').addClass('btn btn-dark rounded'),
+                    new ImageComponent('./assets/brand-notate.svg', 'brand-notate')
+                ),
+            new Component('div')
+                .addClass('mb-3')
+                .merge(
+                    new InputComponent('login', 'text')
+                        .setPlaceHolder('Login')
+                        .addClass('form-control')
+                ),
+            new Component('div')
+                .addClass('mb-3')
+                .merge(
+                    new InputComponent('password', 'password')
+                        .setPlaceHolder('Password')
+                        .addClass('form-control')
+                ),
+            this.#InvalidAuthComponent,
+            new Component('div')
+                .addClass('d-flex', 'flex-column', 'justify-content-center')
+                .merge(
+                    new ButtonComponent('btn-login', 'Login')
+                        .addClass('btn', 'btn-outline-dark', 'rounded', 'mb-3'),
+                    new ButtonComponent('btn-signin', 'Signin')
+                        .addClass('btn', 'btn-dark', 'rounded'),
                 )
         );
 
@@ -56,11 +69,10 @@ export class AuthFormExemplar extends FormComponent {
         e.preventDefault();
 
         this.element.dispatchEvent(new Event(e.submitter.name));
-        this.#disableButtons(5000, this.getControl('btn-login'), this.getControl('btn-signin'));
     }
 
     #onLogin(e) {
-        if (false) {
+        if (true) {
             this.#InvalidAuthComponent.hidden = false;
 
             setTimeout(() => {
@@ -68,22 +80,8 @@ export class AuthFormExemplar extends FormComponent {
             }, 5000);
         }
 
-        this.element.dispatchEvent(new Event('logged-in', { once: true, bubbles: true }));
+        this.element.dispatchEvent(new Event('loggedin', { once: true, bubbles: true }));
     }
 
-    #onSignin(e) {
-        console.log('signin');
-    }
-
-    #disableButtons(ms, ...buttons) {
-        for (let button of buttons) {
-            button.classList.add('disabled');
-        }
-
-        setTimeout(() => {
-            for (let button of buttons) {
-                button.classList.remove('disabled');
-            }
-        }, ms);
-    }
+    #onSignin(e) {}
 }

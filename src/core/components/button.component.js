@@ -5,7 +5,7 @@ export class ButtonComponent extends Component {
         super('button');
 
         this.element.name = name;
-        this.textContent = text;
+        this.text = text;
 
         if (type != undefined) this.element.type = type;
     }

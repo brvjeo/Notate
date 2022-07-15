@@ -1,6 +1,6 @@
 export class Component {
-    constructor(tagName) {
-        this.element = document.createElement(tagName);
+    constructor(tag) {
+        this.element = document.createElement(tag);
     }
 
     set hidden(value) {
@@ -15,11 +15,11 @@ export class Component {
         this.addId(value);
     }
 
-    set textContent(value) {
-        this.setTextContent(value);
+    set text(value) {
+        this.setText(value);
     }
 
-    setTextContent(text) {
+    setText(text) {
         this.element.textContent = text;
 
         return this;
@@ -45,8 +45,8 @@ export class Component {
         this.element.id = id;
     }
 
-    addClass(classes) {
-        classes.split(' ').forEach(value => this.element.classList.add(value));
+    addClass(...classes) {
+        this.element.classList.add(...classes);
 
         return this;
     }

@@ -2,19 +2,31 @@ import { AuthFormExemplar } from './exemplars/authform.exemplar';
 
 export class Application {
     constructor(){
-        document.addEventListener('logged-in',this.run.bind(this));
+        this.loggedin = this.run;
     }
 
-    auth() {
-        const authform = new AuthFormExemplar();
+    start(){
+        if(true){
+            this.authenticate()
+        }else{
+            this.run();
+        }
+    }
+
+    authenticate() {
         document.body.classList.add('d-flex', 'align-items-center', 'justify-content-center');
-        document.body.appendChild(authform.render().element);
+        this.render(new AuthFormExemplar().render());
     }
 
-    run(e){
-        console.log('Start');
-        document.removeEventListener('logged-in',this.run);
+    run(){
+        console.log('run');
+    }
 
-        console.log(document);
+    set loggedin(value){
+        document.addEventListener('loggedin', value);
+    }
+
+    render(component){
+        document.body.appendChild(component.element);
     }
 }
