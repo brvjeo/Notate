@@ -27,6 +27,14 @@ export class FormComponent extends Component {
         return this.element.method;
     }
 
+    get elements(){
+        return this.element.elements;
+    }
+
+    set onsubmit(value) {
+        this.element.onsubmit = value;
+    }
+
     reset() {
         this.element.reset();
     }
@@ -40,10 +48,6 @@ export class FormComponent extends Component {
     }
 
     getControl(name) {
-        return this.element.elements[`${this.name}-${name}`];
-    }
-
-    set onsubmit(value) {
-        this.element.onsubmit = value.bind(this);
+        return this.elements[`${this.name}-${name}`];
     }
 }

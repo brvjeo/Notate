@@ -51,17 +51,21 @@ export class Component {
         return this;
     }
 
+    toggleClass(...classes){
+        this.element.classList.toggle(...classes);
+
+        return this;
+    }
+
     removeClass(...classes){
         this.element.classList.remove(...classes);
+
+        return this;
     }
 
     merge(...components) {
         components.forEach(component => this.element.appendChild(component.element));
 
         return this;
-    }
-
-    render() {
-        return this.element.outerHTML;
     }
 }

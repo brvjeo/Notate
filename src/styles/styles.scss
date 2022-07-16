@@ -17,3 +17,16 @@ input[type="password"]:focus {
     background-color: initial;
     border-color: initial;
 }
+
+.animated-hidden{
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    border: none !important;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.transition-hidden{
+    transition: all 0.1s linear;
+}

@@ -3,27 +3,19 @@ import { FormComponent } from "../components/form.component";
 import { ImageComponent } from '../components/image.component';
 import { InputComponent } from '../components/input.component';
 import { ButtonComponent } from '../components/button.component';
-import { HiddenComponent } from '../components/hidden.component';
-
+import { getFormControlName } from '../functions';
+import { InputHandler } from '../handlers/input.handler';
 
 export class AuthFormExemplar extends FormComponent {
     #InvalidAuthMessage = 'Invalid login or password!';
-    #InvalidAuthComponent;
+    InvalidAuthComponent = new Component('div').addClass('mb-3', 'text-center', 'text-danger', 'border-danger', 'animated-hidden', 'transition-hidden');
+
+    #isDisabled = true;
 
     constructor() {
         super('auth-form');
+
         this.addClass(this.name);
-
-        this.onsubmit = this.#onSubmit;
-        this.onlogin = this.#onLogin;
-        this.onsignin = this.#onSignin;
-
-        this.#InvalidAuthComponent = new HiddenComponent('div');
-        this.#InvalidAuthComponent.text = this.#InvalidAuthMessage;
-        this.#InvalidAuthComponent.addClass('mb-3','text-center','text-danger');
-    }
-
-    render() {
         this.merge(
             new Component('div')
                 .addClass('mb-5', 'auth-logo', 'd-flex', 'justify-content-center')
@@ -33,7 +25,7 @@ export class AuthFormExemplar extends FormComponent {
             new Component('div')
                 .addClass('mb-3')
                 .merge(
-                    new InputComponent('login', 'text')
+                    new InputComponent('login', 'email')
                         .setPlaceHolder('Login')
                         .addClass('form-control')
                 ),
@@ -44,44 +36,66 @@ export class AuthFormExemplar extends FormComponent {
                         .setPlaceHolder('Password')
                         .addClass('form-control')
                 ),
-            this.#InvalidAuthComponent,
+            this.InvalidAuthComponent,
             new Component('div')
                 .addClass('d-flex', 'flex-column', 'justify-content-center')
                 .merge(
-                    new ButtonComponent('btn-login', 'Login')
+                    new ButtonComponent('log-in', 'Login')
                         .addClass('btn', 'btn-outline-dark', 'rounded', 'mb-3'),
-                    new ButtonComponent('btn-signin', 'Signin')
+                    new ButtonComponent('sign-up', 'Signup')
                         .addClass('btn', 'btn-dark', 'rounded'),
                 )
         );
-
-        return this;
+        this.deactivateControls();
+        
+        this.onsubmit = (e) => {
+            e.preventDefault();
+            this.element.dispatchEvent(new Event(getFormControlName(e.submitter.name, this.name + '-'), {
+                bubbles: true
+            }));
+        };
+        this.element.addEventListener('input', (e) => {
+            if(!InputHandler.isEmpty(this.getControl('login')) && !InputHandler.isEmpty(this.getControl('password'))){
+                this.activateControls();
+            }else{
+                this.deactivateControls();
+            }
+        });
     }
 
-    set onlogin(value) {
-        this.element.addEventListener('auth-form-btn-login', value.bind(this));
-    }
-    set onsignin(value) {
-        this.element.addEventListener('auth-form-btn-signin', value.bind(this));
+    get isDisabled(){
+        return this.#isDisabled;
     }
 
-    #onSubmit(e) {
-        e.preventDefault();
-
-        this.element.dispatchEvent(new Event(e.submitter.name));
-    }
-
-    #onLogin(e) {
-        if (true) {
-            this.#InvalidAuthComponent.hidden = false;
-
-            setTimeout(() => {
-                this.#InvalidAuthComponent.hidden = true;
-            }, 5000);
+    deactivateControls() {
+        for (let control of this.element.elements) {
+            if (control instanceof HTMLButtonElement) {
+                control.classList.add('disabled');
+            }
         }
-
-        this.element.dispatchEvent(new Event('loggedin', { once: true, bubbles: true }));
+        this.#isDisabled = true;
     }
 
-    #onSignin(e) {}
+    activateControls() {
+        for (let control of this.element.elements) {
+            if (control instanceof HTMLButtonElement) {
+                control.classList.remove('disabled');
+            }
+        }
+        this.#isDisabled = false;
+    }
+
+    hideInvalidAuthComponent(){
+        this.InvalidAuthComponent.addClass('animated-hidden');
+        this.InvalidAuthComponent.text = '';
+    }
+
+    showInvalidAuthComponent(msg = this.#InvalidAuthMessage){
+        this.InvalidAuthComponent.text = msg;
+        this.InvalidAuthComponent.removeClass('animated-hidden');
+
+        setTimeout(() => {
+            this.hideInvalidAuthComponent();
+        },4000);
+    }
 }
