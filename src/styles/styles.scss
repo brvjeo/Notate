@@ -7,23 +7,8 @@ input[type="password"]:focus {
     border-color: rgba(0, 0, 0, 0.25);
 }
 
-.auth-form{
-    width: 300px;
-}
 .btn-outline-dark:hover {
     color: initial;
     background-color: initial;
     border-color: initial;
-}
-.animated-hidden{
-    margin: 0 !important;
-    padding: 0 !important;
-    height: 0 !important;
-    border: none !important;
-    opacity: 0;
-    overflow: hidden;
-}
-
-.transition-hidden{
-    transition: all 0.15s linear;
 }
