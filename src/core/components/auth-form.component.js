@@ -1,12 +1,11 @@
 import { model, styles } from '../models/auth-form.model';
-import '../models/auth-form.styles.scss';
+import { BaseForm } from './base-form.component';
+import '../styles/auth-form.styles';
 
-export class AuthForm extends HTMLFormElement {
+export class AuthForm extends BaseForm {
     constructor(name = 'auth-form') {
-        super();
+        super(name);
 
-        this.name = name;
-        this.classList.add(this.name);
         this.applyStyles(styles);
         this.model = model(this.name, this.controlNames);
 
@@ -16,12 +15,6 @@ export class AuthForm extends HTMLFormElement {
             } else {
                 this.deactivateControls([this.controlNames.btn_login,this.controlNames.btn_signup]);
             }
-        }
-    }
-
-    applyStyles(styles) {
-        for (let style in styles) {
-            this.style[style] = styles[style];
         }
     }
 
@@ -46,31 +39,11 @@ export class AuthForm extends HTMLFormElement {
         };
     }
 
-    inputIsNotEmpty(...inputs) {
-        return inputs.every(input => {
-            if(!trimSpaces(this.elements[input].value).length){
-                return false;
-            }else{
-                return true;
-            }
-        },this);
+    deactivateControls(names = [...this.controlNames]){
+        super.deactivateControls(names);
     }
 
-    deactivateControls(names = [...this.controlNames]) {
-        names.forEach(name => this.elements[name].setAttribute('disabled', true));
-
-        this.controlsDisabled = true;
-    }
-
-    activateControls() {
-        for (let name in this.controlNames) {
-            this.elements[this.controlNames[name]].removeAttribute('disabled', true);
-        }
-
-        this.controlsDisabled = false;
-    }
-
-    async showTooltip(text = 'Invalid email or password!', color = 'text-danger') {
+    showTooltip(text = 'Invalid email or password!', color = 'text-danger') {
         let tooltip = this.querySelector(`#${this.name}-tooltip`);
         tooltip.classList.add(color);
         tooltip.textContent = text;
@@ -83,29 +56,11 @@ export class AuthForm extends HTMLFormElement {
         }, 4000);
     }
 
-    async freezeFor(ms){
+    freezeFor(ms){
         this.deactivateControls();
         setTimeout(() => {
             this.activateControls();
         },ms);
     }
 }
-window.customElements.define('auth-form', AuthForm, { extends: 'form' });
-
-function cutString(str, substr) {
-    return str.substring(str.indexOf(substr) + substr.length);
-}
-
-function trimSpaces(str){ // think about Array.prototype.splice.call(str,...);
-    str = [...str];
-
-    let index = str.findIndex(value => value == ' ');
-    while(index != -1){
-        str.splice(index,1);
-        index = str.findIndex(value => value == ' ');
-    }
-
-    return str.join('');
-}
-
-
+window.customElements.define('auth-form', AuthForm, {extends: 'form'});

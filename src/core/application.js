@@ -1,11 +1,11 @@
-import { AuthForm } from "./components/auth-form.component";
+import * as bootstrap from 'bootstrap';
+import { AuthForm } from './components/auth-form.component';
+import { SignupModal } from './components/signup-modal.component';
 import { app, firebaseConfig } from './firebase/firebase';
 import { AuthErrorCodes, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default class Application {
     #firebaseApp;
-    #loginCounts = 0;
-    #freezeTime = 30;
 
     constructor() {
         this.app = document.getElementById('app');
@@ -23,7 +23,7 @@ export default class Application {
             let login, password;
             authform.onsubmit = (e) => {
                 e.preventDefault();
-                if(authform.controlsDisabled){
+                if (authform.controlsDisabled) {
                     return;
                 }
 
@@ -46,21 +46,17 @@ export default class Application {
     #onLogin(auth, login, password, form) {
         signInWithEmailAndPassword(auth, login, password)
             .then(userCredential => {
-                console.log('User login!');
+                console.log('Login: ');
                 console.log(userCredential.user);
-                this.#loginCounts = 0;
-                this.#freezeTime = 30;
             })
             .catch(error => {
-                this.#loginCounts++;
-                if(this.#loginCounts > 5){
-                    form.showTooltip(`Too much tries! Freeze for ${this.#freezeTime} sec!`);
-                    form.freezeFor(this.#freezeTime * 1000);
-                    this.#freezeTime *= 2;
+                console.log('Catch error!');
+                if(error.code == AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER){
+                    form.showTooltip('Too much attempts!Try later!');
                 }else{
                     form.showTooltip();
                 }
-            });
+            })
     }
 
     #onSignup(auth, login, password, form) {
@@ -70,11 +66,11 @@ export default class Application {
                 console.log(userCredential.user);
             })
             .catch(error => {
-                if(error.code == AuthErrorCodes.WEAK_PASSWORD){
-                    form.showTooltip('Too weak password!Must be at least 6 symbols!','text-warning');
-                }else if(error.code == AuthErrorCodes.EMAIL_EXISTS){
+                if (error.code == AuthErrorCodes.WEAK_PASSWORD) {
+                    form.showTooltip('Too weak password!Must be at least 6 symbols!', 'text-warning');
+                } else if (error.code == AuthErrorCodes.EMAIL_EXISTS) {
                     form.showTooltip('Email is already in use!');
-                }else{
+                } else {
                     form.showTooltip('Something went wrong!');
                 }
             });

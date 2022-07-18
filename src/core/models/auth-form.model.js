@@ -1,5 +1,5 @@
 export const model  = (name,controls) => {
-    return `<div class="img-wrapper d-flex justify-content-center mb-5">
+    return `<div class="img-wrapper justify-content-center mb-5">
                 <img src="../assets/brand-notate.svg" alt="brand-notate" class="${name}-img d-flex">
             </div>
             <div class="controls-wrapper d-flex flex-column">
@@ -14,5 +14,5 @@ export const model  = (name,controls) => {
 };
 
 export const styles = {
-    width: '300px'
+    width: '280px'
 }
