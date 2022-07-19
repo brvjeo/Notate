@@ -1,5 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 
+$modal-fade-transform: scale(.8);
 
 input[type="email"]:focus,
 input[type="password"]:focus {
@@ -29,3 +30,4 @@ input[type="password"]:focus {
 .transition-hidden{
     transition: all 0.15s linear;
 }
+
