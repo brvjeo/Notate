@@ -16,3 +16,16 @@ input[type="password"]:focus {
 .img-wrapper{
     display: flex;
 }
+
+.animated-hidden{
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    border: none !important;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.transition-hidden{
+    transition: all 0.15s linear;
+}
