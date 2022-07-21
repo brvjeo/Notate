@@ -21,11 +21,9 @@ export class FormHandler {
 
     static transferToObject(formdata) {
         let data = {};
-
         for (let [key, value] of formdata.entries()) {
             data[key] = value;
         }
-
         return data;
     }
 }
